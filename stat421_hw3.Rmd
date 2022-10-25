@@ -1,0 +1,174 @@
+---
+title: "stat421_hw3"
+output: pdf_document
+date: "2022-10-14"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+### Lecture 6
+
+![](no6-1.jpg)
+```{r 6-2a}
+1-pchisq(q=43.77,df=30)
+```
+![](no6-2a.jpg)
+![](no6-2b.jpg)
+```{r 6-3}
+1-pf(q=2.33,20,24)
+```
+![](no6-3.jpg)
+```{r 6-4a}
+(qt(0.05,df=20)*(sqrt(2/21)))+3
+```
+![](no6-4a.jpg)
+![](no6-4b.jpg)
+
+![](no6-4c.jpg)
+```{r 6-4c}
+pt(q=(2.5-3)/(sqrt(2)/sqrt(21)),df=20)
+```
+
+4d) We know that the p-value is 0.06042675 from part c, and that $\alpha = 0.05$.
+Since p-value > 0.05, we cannot reject the H0.
+
+
+### Lecture 7
+
+![](no7-1.jpg)
+![](no7-2.jpg)
+```{r 7-3a}
+# Part 3a
+# H0: mu1 - mu2 = 0
+# H1: mu1 - mu2 != 0
+y1 = c( 65, 82, 81, 67, 57, 59, 66, 75, 82, 70 )
+y2 = c( 64, 56, 71, 69, 83, 74, 59, 82, 65, 79 )
+n1 = 10
+n2 = 10
+mean1 = mean(y1)
+mean2 = mean(y2)
+
+# REJECTION REGION
+(t_alpha = qt(0.05/2, n1+n2-2))
+(t_alpha1 = qt(1-(0.05/2), n1+n2-2))
+
+(sp = sqrt(((n1-1)*var(y1) + (n2-1)*var(y2))/(n1+n2-2))) 
+(t_obs = (mean(y1) - mean(y2))/(sp*sqrt(1/n1 + 1/n2)))
+
+# P-VALUE
+(p_val = 2*pt(-t_obs,n1+n2-2))
+
+# CONFIDENCE INTERVAL
+(lower_bound = (mean1-mean2)+t_alpha*sp*(sqrt((1/n1)+(1/n2))))
+(upper_bound = (mean1-mean2)-t_alpha*sp*(sqrt((1/n1)+(1/n2))))
+```
+The rejection region are <-2.1009 and >2.1009. we know that the t observation is not inside the rejection region, which is why we cannot reject the H0 that (mu1-mu2) = 0. Since alpha=0.05 and p-value=0.96, we cannot reject the null hypothesis because p-value>alpha.
+The confidence interval is [-8.55244,8.95244]. Since 0 is inside the CI, we can choose to not reject the null hypothesis.
+
+```{r 7-3b}
+# Part 3b
+# H0: sigma1 = sigma2
+# H1: sigma1 != sigma2 
+
+# REJECTION REGION
+(f_alpha = qf(0.05/2, n1-1, n2-1))
+(f_alpha1 = qf(1-(0.05/2), n1-1, n2-1))
+
+(f_obs = var(y1)/var(y2))
+
+# P-VALUE 
+(p_val_f = 2*pf(f_obs,n1-1,n2-1)) # 2-sided
+
+# CONFIDENCE INTERVAL (why?)
+(lower = (var(y1)/var(y2)) * qf(0.05/2, n2-1, n1-1)) 
+(upper = (var(y1)/var(y2)) * qf(1-0.05/2, n2-1, n1-1))
+```
+The rejection region are <0.248386 and >4.0259942. We know that the f observation is not inside the rejection region, which is why we cannot reject the H0. Since alpha=0.05 and p-value=0.97, we cannot reject the null hypothesis because p-value>alpha. The confidence interval is [0.24298,3.9383]. Since the CI includes 1, we cannot reject H0. 
+
+### Lecture 8
+
+![](no8.jpg)
+
+```{r 8-3a}
+y = matrix(nrow=4,ncol=10)
+y[1,] = c( -2.10552316, 1.89491371, -1.52919682, -0.99265143, -0.45911960, 1.09271028, -1.54680778, 0.13890677, 0.06240357, -1.09273045)
+y[2,] = c( 4.25667943, 4.36518096, 4.42108835, 3.77229146, 2.22264903, 3.95354759, 6.29377745, 3.58501081, 3.12457306, 3.04360597)
+y[3,] = c( 3.64209745, 2.76932242, 1.46001019, 0.23739519, 0.27629510, 2.83897173, 2.99999590, 3.54657820, 2.03955378, 1.28515784)
+y[4,] = c( 3.18088593, 5.44976665, 5.87116946, 4.01275036, 6.00826692, 5.19220036, 6.17338313, 4.88846073, 4.49330445, 4.83224707)
+
+# part a
+boxplot(y[1,],y[2,],y[3,],y[4,])
+```
+We can see from the boxplots that x has some effect on y. We can see that y4 has a higher distribution
+than the other y's, while y1 has the smallest values. We can also see that there is a difference 
+between the y2 and y3.
+
+```{r 8-3b}
+# part b
+grand_mean = mean(y)
+y_measure = y-grand_mean
+boxplot(y_measure[1,],y_measure[2,],y_measure[3,],y_measure[4,])
+```
+Subtracting the mean does not change anything, but the overall boxplot are just shifted downwards. 
+It still looks like that x has an effect on y.
+
+```{r 8-3c}
+# part c
+y_bar = c(mean(y[1,]),mean(y[2,]),mean(y[3,]),mean(y[4,]))
+(effects = c(y_bar[1]-grand_mean, y_bar[2]-grand_mean, y_bar[3]-grand_mean, y_bar[4]-grand_mean))
+```
+
+```{r 8-3d}
+# part d
+(se = c(sd(y[1,])/sqrt(10),sd(y[2,])/sqrt(10),sd(y[3,])/sqrt(10),sd(y[4,])/sqrt(10)))
+```
+
+8-3e) 
+ -3.096 +- 0.399
+ 1.261 +- 0.343
+ -0.533 +- 0.396
+ 2.368 +- 0.298
+it looks like the third effect might be zero because zero is inside the interval of mean+-se
+
+```{r 8-3f}
+# part f
+n = 10
+a = 4
+var = c(var(y[1,]),var(y[2,]),var(y[3,]),var(y[4,]))
+SS_treatment = n*sum(effects^2)
+SS_error = (n-1)*(sum(var))
+MS_treatment = SS_treatment/(a-1)
+MS_error = SS_error/((n*a)-a)
+(F_ratio = MS_treatment / MS_error)
+(F_alpha = qf(0.05,a-1,a*n-a,lower.tail=FALSE))
+```
+The rejection region is >2.866. Since, the F_ratio is inside the rejection region
+we choose to reject H0 in favor of H1. This means that x has an effect on y
+
+```{r 8-3g}
+# part g
+x_vec=rep(1:4,10)
+y_vec = as.numeric(y) # visually confirm y.vector is the correct y in vector form.
+summary.aov(lm(y_vec ~ as.factor(x_vec))) 
+```
+The p-value is 4.58e-12. Since 4.58e-12 is smaller than alpha, then we choose
+to reject the H0 in favor of H1
+
+```{r 8-3h}
+# part h
+plot(c(1,1),cex=0, xlim=c(-2,2), ylim=range(y))
+for (i in 1:a) {
+  x = y[i,]
+  n = length(x)
+  probs = seq(0.5/n, 1-0.5/n, length = n)
+  q = qnorm(probs,0,1)
+  points(q,sort(x),col=i)
+}
+```
+We can see that the qq plots are pretty much straight, and this means that they most likely 
+follow the normal distribution. Their slopes are also pretty similar which means that
+their variances are also similar. 
+
+
+
