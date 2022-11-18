@@ -1,4 +1,4 @@
-- 👋 Hi, I’m Kathleen, a junior studying Statistics with a Data Science concentration at University of Washington
+- 👋 Hi, I’m Kathleen, a senior studying Statistics with a Data Science concentration at University of Washington
 - 👀 I’m interested in discovering more about the applications of statistical and data analysis. I'm currently seeking for internships 
      related to the data field
 - 🌱 I’m currently learning about data visualization and statistical machine learning
